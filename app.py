@@ -42,7 +42,7 @@ def sb_load_history():
     """從 Supabase 讀取歷史紀錄，依時間倒序"""
     try:
         r = requests.get(
-            f"{SUPABASE_URL}/rest/v1/pi-asset_history",
+            f"{SUPABASE_URL}/rest/v1/pi_asset_history",
             headers=HEADERS,
             params={"order": "date.desc", "limit": "30"},
             timeout=8,
@@ -57,7 +57,7 @@ def sb_save_history(row: dict):
     """新增一筆紀錄到 Supabase"""
     try:
         r = requests.post(
-            f"{SUPABASE_URL}/rest/v1/pi-asset_history",
+            f"{SUPABASE_URL}/rest/v1/pi_asset_history",
             headers=HEADERS,
             json=row,
             timeout=8,
@@ -71,7 +71,7 @@ def sb_clear_history():
     """清除所有歷史紀錄"""
     try:
         r = requests.delete(
-            f"{SUPABASE_URL}/rest/v1/pi-asset_history",
+            f"{SUPABASE_URL}/rest/v1/pi_asset_history",
             headers={**HEADERS, "Prefer": "return=minimal"},
             params={"date": "neq.null"},
             timeout=8,
@@ -267,7 +267,7 @@ if history:
         st.line_chart(chart_df, color=["#4fd1c5"])
 
     csv = display_df.to_csv(index=False).encode("utf-8-sig")
-    st.download_button("📥 下載完整 CSV 備份", data=csv, file_name="pi-asset_history.csv", mime="text/csv")
+    st.download_button("📥 下載完整 CSV 備份", data=csv, file_name="asset_history.csv", mime="text/csv")
 
     if st.button("🗑️ 清除所有歷史紀錄"):
         if sb_clear_history():
